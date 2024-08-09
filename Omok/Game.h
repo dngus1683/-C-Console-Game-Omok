@@ -8,7 +8,7 @@ class Game
 {
 private:
 	DrawMap m_DrawMap;
-	//Player player[2];
+	Player* player[2];
 	Board board;
 	void PlayGame();
 public:

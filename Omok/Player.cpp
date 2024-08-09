@@ -8,32 +8,38 @@ Player::~Player()
 {
 }
 
-void Player::MakeMove(Board& board)
+Position Player::MakeMove(Board& board)
 {
-	int x, y;
-
-	while (true)
+	char input = 'a';
+	while (input != ' ')
 	{
-		char input;
-
 		input = _getch();
 
 		switch (input)
 		{
 		case 'w':
+			if (pos.y > 0) pos.y--;
 			break;
 		case 's':
+			if (pos.y < 39) pos.y++;
 			break;
 		case 'a':
+			if (pos.x > 0) pos.x--;
 			break;
 		case 'd':
-			break;
-		case ' ':
+			if (pos.x < 39) pos.x++;
 			break;
 		default:
 			break;
 		}
+		gotoxy(pos);
 	}
+	return pos;
+}
+
+void Player::PlacePiece()
+{
+	cout << piece.GetSymbol();
 }
 
 string Player::GetName() const 

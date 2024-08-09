@@ -27,6 +27,12 @@ struct Position
 };
 
 // 콘솔창의 커서를 원하는 위치로 옮겨주는 함수.
+inline void gotoxy(Position& p)
+{
+	COORD Pos = { p.x, p.y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
+
+}
 inline void gotoxy(int x, int y)
 {
 	COORD Pos = { x, y };

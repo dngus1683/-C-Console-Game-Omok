@@ -5,11 +5,11 @@ Piece::Piece(int num)
 {
 	if (num == 0)
 	{
-		SetSymbol("O");
+		SetSymbol("○");
 	}
 	else if (num == 1)
 	{
-		SetSymbol("X");
+		SetSymbol("●");
 	}
 }
 

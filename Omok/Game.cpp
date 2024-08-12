@@ -4,7 +4,7 @@ void Game::PlayGame()
 {
 	while (true)
 	{
-		Position pos = player[currnetPlayer]->MakeMove(board);
+		NowPosition = player[currnetPlayer]->MakeMove(board, NowPosition);
 		player[currnetPlayer]->PlacePiece();
 		SwitchPlayer();
 	}

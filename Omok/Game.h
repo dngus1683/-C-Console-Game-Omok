@@ -10,6 +10,7 @@ private:
 	DrawMap m_DrawMap;
 	Player* player[2];
 	Board board;
+	Position NowPosition = { WIDTH, HEIGHT };
 	void PlayGame();
 public:
 	Game();

@@ -8,7 +8,7 @@ Player::~Player()
 {
 }
 
-Position Player::MakeMove(Board& board)
+Position Player::MakeMove(Board& board, Position pos)
 {
 	char input = 'a';
 	while (input != ' ')
@@ -18,16 +18,16 @@ Position Player::MakeMove(Board& board)
 		switch (input)
 		{
 		case 'w':
-			if (pos.y > 0) pos.y--;
+			if (pos.y > 0) pos.y -= 1;
 			break;
 		case 's':
-			if (pos.y < 39) pos.y++;
+			if (pos.y < 39) pos.y += 1;
 			break;
 		case 'a':
-			if (pos.x > 0) pos.x--;
+			if (pos.x > 0) pos.x -= 2;
 			break;
 		case 'd':
-			if (pos.x < 39) pos.x++;
+			if (pos.x < 39) pos.x += 2;
 			break;
 		default:
 			break;

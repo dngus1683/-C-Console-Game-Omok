@@ -50,6 +50,7 @@ void GameManager::RunGame()
 	if (menu == 1)
 	{
 		Game* OneGame = new Game;
+		OneGame->PlayGame();
 	}
 
 }

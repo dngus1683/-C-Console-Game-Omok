@@ -8,7 +8,7 @@ Player::~Player()
 {
 }
 
-Position Player::MakeMove(Board& board, Position pos)
+Position Player::MakeMove(Position pos)
 {
 	char input = 'a';
 	while (input != ' ')
@@ -34,12 +34,19 @@ Position Player::MakeMove(Board& board, Position pos)
 		}
 		gotoxy(pos);
 	}
+	this->pos = pos;
 	return pos;
 }
 
-void Player::PlacePiece()
+bool Player::PlacePiece(Board* board)
 {
-	cout << piece.GetSymbol();
+	if (board->IsFull(pos)) return false;
+	else
+	{
+		board->PlacePiece(id, pos);
+		cout << piece.GetSymbol();
+	}
+	return true;
 }
 
 string Player::GetName() const 

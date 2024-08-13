@@ -31,7 +31,8 @@ void DrawMap::GridDraw(int Start_x, int Start_y, int Width, int Height)
 			cout << "¦©";
 		}
 	}
-	return;
+	gotoxy(Width, Height/2);
+	return; 
 }
 
 void DrawMap::BoxDraw(int Start_x, int Start_y, int Width, int Height)

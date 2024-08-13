@@ -8,16 +8,15 @@ Board::~Board()
 {
 }
 
-void Board::DrawBoard()
+void Board::PlacePiece(int& id, Position& pos)
 {
+	board[pos.y][pos.x / 2] = id;
 }
 
-void Board::PlacePiece()
+bool Board::IsFull(Position& pos)
 {
-}
-
-void Board::IsFull()
-{
+	if (board[pos.y][pos.x/2] != 0) return true;
+	else return false;
 }
 
 void Board::IsWinningMove(int x, int y)

@@ -5,14 +5,13 @@
 class Board
 {
 private:
-	Piece board[19][19];
+	short board[19][19] = { 0, };
 public:
 	Board();
 	~Board();
 
-	void DrawBoard();
-	void PlacePiece();
-	void IsFull();
+	void PlacePiece(int& id, Position& pos);
+	bool IsFull(Position& pos);
 	void IsWinningMove(int x, int y);
 };
 

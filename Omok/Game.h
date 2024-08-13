@@ -9,15 +9,14 @@ class Game
 private:
 	DrawMap m_DrawMap;
 	Player* player[2];
-	Board board;
-	Position NowPosition = { WIDTH, HEIGHT };
-	void PlayGame();
+	Board* board;
+	Position NowPosition = { WIDTH, HEIGHT /2};
 public:
 	Game();
 	~Game();
 
 	int currnetPlayer;
 	void SwitchPlayer();
-
+	void PlayGame();
 };
 

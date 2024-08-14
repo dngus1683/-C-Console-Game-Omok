@@ -6,8 +6,11 @@ void Game::PlayGame()
 	{
 		NowPosition = player[currnetPlayer]->MakeMove(NowPosition);
 		if (!player[currnetPlayer]->PlacePiece(board)) continue;
+		if (board->IsWinningMove(player[currnetPlayer]->GetId(), NowPosition)) break;
 		SwitchPlayer();
 	}
+	gotoxy(0, 1000);
+	cout << player[currnetPlayer]->GetId() << "´ÔÀÌ ½Â¸®ÇÏ¼Ì½À´Ï´Ù!\n";
 }
 
 Game::Game()

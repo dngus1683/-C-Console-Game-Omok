@@ -8,7 +8,7 @@ Board::~Board()
 {
 }
 
-void Board::PlacePiece(int& id, Position& pos)
+void Board::PlacePiece(const int& id, Position& pos)
 {
 	board[pos.y][pos.x / 2] = id;
 }
@@ -19,15 +19,14 @@ bool Board::IsFull(Position& pos)
 	else return false;
 }
 
-void Board::IsWinningMove(int x, int y)
-{
-	// bool visited[19][19] = { 0, };
 
-}
+int cnt = 0;
+int deltaX[4] = { 1, 0, 1, 1 };
+int deltaY[4] = { 0, 1, 1, -1 };
 
-/*
-static bool dfs(bool visited[19][19], Piece board[19][19], int x, int y, int direction, int cnt)
+static bool dfs(bool visited[19][19], short board[19][19], short id, int x, int y, int direction)
 {
+	bool answer = false;
 	visited[y][x] = true;
 	cnt++;
 
@@ -40,19 +39,33 @@ static bool dfs(bool visited[19][19], Piece board[19][19], int x, int y, int dir
 
 	for (int i = 0; i < 2; i++)
 	{
-		int NextX = x + (sign ? dx[direction] : -dx[direction]);
-		int NextY = y + (sign ? dy[direction] : -dy[direction]);
+		int NextX = x + (sign ? deltaX[direction] : -deltaX[direction]);
+		int NextY = y + (sign ? deltaY[direction] : -deltaY[direction]);
 		if (NextX >= 0 && NextY >= 0 && NextX < 19 && NextY < 19)
 		{
-			if (!visited[NextY][NextX] && (*board[NextY][NextX].GetSymbol() == *board[NextY][NextX].GetSymbol()))
+			if (!visited[NextY][NextX] && (board[NextY][NextX] == id))
 			{
-				dfs(visited, board, NextX, NextY, direction, cnt);
+				if (dfs(visited, board, id, NextX, NextY, direction))
+				{
+					return true;
+				}
 			}
 		}
-
-
 		sign = !sign;
 	}
-
+	return false;
 }
-*/
+
+bool Board::IsWinningMove(const int& id, Position& pos)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		bool visited[19][19] = { 0, };
+		cnt = 0;
+		if (dfs(visited, board, id, pos.x / 2, pos.y, i))
+		{
+			return true;
+		}
+	}
+	return false;
+}

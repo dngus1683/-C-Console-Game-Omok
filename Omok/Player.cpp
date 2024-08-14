@@ -58,3 +58,8 @@ Piece Player::GetPiece() const
 {
 	return piece;
 }
+
+int Player::GetId() const
+{
+	return id;
+}

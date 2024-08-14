@@ -38,8 +38,3 @@ inline void gotoxy(int x, int y)
 	COORD Pos = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
-
-/*
-int dx[4] = { 1, 0, 1, 1 };
-int dy[4] = { 0, 1, 1, -1 };
-*/

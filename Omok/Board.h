@@ -10,8 +10,7 @@ public:
 	Board();
 	~Board();
 
-	void PlacePiece(int& id, Position& pos);
+	void PlacePiece(const int& id, Position& pos);
 	bool IsFull(Position& pos);
-	void IsWinningMove(int x, int y);
+	bool IsWinningMove(const int& id, Position& pos);
 };
-

@@ -6,7 +6,7 @@
 class Player
 {
 private:
-	int id;
+	const int id;
 	string name;
 	Piece piece;
 	Position pos = { 0, };
@@ -18,5 +18,5 @@ public:
 	bool PlacePiece(Board* board);
 	string GetName() const;
 	Piece GetPiece() const;
+	int GetId() const;
 };
-

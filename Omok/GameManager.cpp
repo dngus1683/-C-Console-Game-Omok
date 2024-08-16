@@ -52,5 +52,16 @@ void GameManager::RunGame()
 		Game* OneGame = new Game;
 		OneGame->PlayGame();
 	}
+	else if (menu == 2)
+	{
 
+	}
+	else if (menu == 3)
+	{
+		return;
+	}
+	else
+	{
+		RunGame();
+	}
 }

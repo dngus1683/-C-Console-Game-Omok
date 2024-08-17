@@ -1,36 +1,38 @@
 #include "Game.h"
 
-void Game::PlayGame()
+Player* Game::PlayGame()
 {
 	while (true)
 	{
-		NowPosition = player[currnetPlayer]->MakeMove(NowPosition);
-		if (!player[currnetPlayer]->PlacePiece(board)) continue;
-		if (board->IsWinningMove(player[currnetPlayer]->GetId(), NowPosition)) break;
+		NowPosition = player[currentPlayer]->MakeMove(NowPosition);
+		if (!player[currentPlayer]->PlacePiece(board)) continue;
+		if (board->IsWinningMove(player[currentPlayer]->GetId(), NowPosition)) break;
 		SwitchPlayer();
 	}
-	gotoxy(0, 1000);
-	cout << player[currnetPlayer]->GetId() << "´ÔÀÌ ½Â¸®ÇÏ¼Ì½À´Ï´Ù!\n";
+	return player[currentPlayer];
 }
 
 Game::Game()
 {
-	currnetPlayer = 0;
+	currentPlayer = 0;
 	m_DrawMap.GridDraw(0, 0, WIDTH, HEIGHT);
 	board = new Board;
 	Piece piece1(0);
 	Piece piece2(1);
-	Player* player1 = new Player(1, "a", piece1);
-	Player* player2 = new Player(2, "b", piece2);
+	Player* player1 = new Player(1, piece1);
+	Player* player2 = new Player(2, piece2);
 	player[0] = player1;
 	player[1] = player2;
 }
 
 Game::~Game()
 {
+	delete player[0];
+	delete player[1];
+	delete board;
 }
 
 void Game::SwitchPlayer()
 {
-	currnetPlayer = (currnetPlayer == 1 ? 0 : 1);
+	currentPlayer = (currentPlayer == 1 ? 0 : 1);
 }

@@ -15,8 +15,8 @@ public:
 	Game();
 	~Game();
 
-	int currnetPlayer;
+	int currentPlayer;
 	void SwitchPlayer();
-	void PlayGame();
+	Player* PlayGame();
 };
 

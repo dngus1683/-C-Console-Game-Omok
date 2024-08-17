@@ -23,10 +23,20 @@ int GameManager::MainMenu()
 	return iSelect;
 }
 
-void GameManager::WinningWindow(int id)
+int GameManager::WinningWindow(Player* p)
 {
-
+	int iSelect;
+	char buf[256];
+	sprintf_s(buf, "%d번 님이 우승하셨습니다!", p->GetId());
 	m_DrawManager.DrawMidText("축하합니다!", m_CenterPosition.x, m_CenterPosition.y * 0.5f);
+	m_DrawManager.DrawMidText(buf, m_CenterPosition.x, m_CenterPosition.y * 0.7f);
+	m_DrawManager.DrawMidText("1. 메뉴", m_CenterPosition.x, m_CenterPosition.y * 0.9f);
+	m_DrawManager.DrawMidText("2. 게임 종료", m_CenterPosition.x, m_CenterPosition.y * 1.1f);
+	m_DrawManager.BoxDraw(m_CenterPosition.x * 0.5f, m_CenterPosition.y * 1.3f, 10, 3);
+	gotoxy(m_CenterPosition.x, m_CenterPosition.y * 1.4f);
+	cin >> iSelect;
+
+	return iSelect;
 }
 
 GameManager::GameManager()
@@ -56,7 +66,19 @@ void GameManager::RunGame()
 	if (menu == 1)
 	{
 		Game* OneGame = new Game;
-		OneGame->PlayGame();
+		Player* winner = OneGame->PlayGame();
+		m_DrawManager.GridDraw(0, 0, m_MapSize.right, m_MapSize.bottom);
+		switch (WinningWindow(winner))
+		{
+		case 2:
+			gotoxy(0, HEIGHT);
+			exit(0);
+		case 1:
+		default:
+			delete OneGame;
+			return;
+		}
+
 
 	}
 	else if (menu == 2)
@@ -65,10 +87,7 @@ void GameManager::RunGame()
 	}
 	else if (menu == 3)
 	{
+		system("cls");
 		exit(0);
-	}
-	else
-	{
-		RunGame();
 	}
 }

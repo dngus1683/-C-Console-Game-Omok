@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(const int& id, const string& name, const Piece& piece) : id(id), name(name), piece(piece)
+Player::Player(const int& id, const Piece& piece) : id(id), piece(piece)
 {
 }
 
@@ -10,7 +10,14 @@ Player::~Player()
 
 Position Player::MakeMove(Position pos)
 {
+	char buf[256];
 	char input = 'a';
+
+	sprintf_s(buf, "=========== % d¹ø % s Â÷·Ê ===========", id, piece.GetSymbol());
+	m_DrawMap.BoxDraw(0, HEIGHT, WIDTH, HEIGHT*0.25f);
+	m_DrawMap.DrawMidText(buf, WIDTH, HEIGHT*1.1f);
+	
+	gotoxy(pos);
 	while (input != ' ')
 	{
 		input = _getch();
@@ -47,11 +54,6 @@ bool Player::PlacePiece(Board* board)
 		cout << piece.GetSymbol();
 	}
 	return true;
-}
-
-string Player::GetName() const 
-{
-	return name;
 }
 
 Piece Player::GetPiece() const 

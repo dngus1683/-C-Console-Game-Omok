@@ -3,5 +3,8 @@
 void main()
 {
 	GameManager GM;
-	GM.RunGame();
+	while (1)
+	{
+		GM.RunGame();
+	}
 } 

@@ -23,6 +23,12 @@ int GameManager::MainMenu()
 	return iSelect;
 }
 
+void GameManager::WinningWindow(int id)
+{
+
+	m_DrawManager.DrawMidText("축하합니다!", m_CenterPosition.x, m_CenterPosition.y * 0.5f);
+}
+
 GameManager::GameManager()
 {
 	m_MapSize.left = 0;
@@ -51,6 +57,7 @@ void GameManager::RunGame()
 	{
 		Game* OneGame = new Game;
 		OneGame->PlayGame();
+
 	}
 	else if (menu == 2)
 	{
@@ -58,7 +65,7 @@ void GameManager::RunGame()
 	}
 	else if (menu == 3)
 	{
-		return;
+		exit(0);
 	}
 	else
 	{

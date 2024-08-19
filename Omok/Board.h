@@ -12,5 +12,5 @@ public:
 
 	void PlacePiece(const int& id, Position& pos);
 	bool IsFull(Position& pos);
-	bool IsWinningMove(const int& id, Position& pos);
+	bool IsWinningMove(const int& id, Position& pos, const bool PermitSix);
 };

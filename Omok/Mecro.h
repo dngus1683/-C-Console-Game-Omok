@@ -12,6 +12,12 @@
 
 using namespace std;
 
+// 게임 세팅: 1.승리조건, 2. 33수
+struct Setting
+{
+	bool PermitWinOverFive;
+};
+
 struct Rect
 {
 	int left;

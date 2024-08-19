@@ -7,12 +7,13 @@
 class Game
 {
 private:
+	Setting m_Setting;
 	DrawMap m_DrawMap;
 	Player* player[2];
 	Board* board;
 	Position NowPosition = { WIDTH, HEIGHT /2};
 public:
-	Game();
+	Game(Setting& setting);
 	~Game();
 
 	int currentPlayer;

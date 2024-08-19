@@ -24,16 +24,23 @@ int cnt = 0;
 int deltaX[4] = { 1, 0, 1, 1 };
 int deltaY[4] = { 0, 1, 1, -1 };
 
-static bool dfs(bool visited[19][19], short board[19][19], short id, int x, int y, int direction)
+static bool IsMoreThanFive(bool visited[19][19], short board[19][19], short id, int x, int y, int direction, const bool PermitSix)
 {
-	bool answer = false;
 	visited[y][x] = true;
 	cnt++;
 
-	if (cnt == 5)
+	if (cnt == 6 )
 	{
-		return true;
+		if (PermitSix)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
+
 
 	bool sign = true;
 
@@ -45,7 +52,7 @@ static bool dfs(bool visited[19][19], short board[19][19], short id, int x, int 
 		{
 			if (!visited[NextY][NextX] && (board[NextY][NextX] == id))
 			{
-				if (dfs(visited, board, id, NextX, NextY, direction))
+				if (IsMoreThanFive(visited, board, id, NextX, NextY, direction, PermitSix))
 				{
 					return true;
 				}
@@ -53,16 +60,21 @@ static bool dfs(bool visited[19][19], short board[19][19], short id, int x, int 
 		}
 		sign = !sign;
 	}
+
+	if (cnt == 5)
+	{
+		return true;
+	}
 	return false;
 }
 
-bool Board::IsWinningMove(const int& id, Position& pos)
+bool Board::IsWinningMove(const int& id, Position& pos, const bool PermitSix)
 {
 	for (int i = 0; i < 4; i++)
 	{
 		bool visited[19][19] = { 0, };
 		cnt = 0;
-		if (dfs(visited, board, id, pos.x / 2, pos.y, i))
+		if (IsMoreThanFive(visited, board, id, pos.x / 2, pos.y, i, PermitSix))
 		{
 			return true;
 		}

@@ -25,16 +25,16 @@ Position Player::MakeMove(Position pos)
 		switch (input)
 		{
 		case 'w':
-			if (pos.y > 0) pos.y -= 1;
+			if (pos.y > 1) pos.y -= 1;
 			break;
 		case 's':
-			if (pos.y < 39) pos.y += 1;
+			if (pos.y < (HEIGHT - 2)) pos.y += 1;
 			break;
 		case 'a':
-			if (pos.x > 0) pos.x -= 2;
+			if (pos.x > 2) pos.x -= 2;
 			break;
 		case 'd':
-			if (pos.x < 39) pos.x += 2;
+			if (pos.x < (WIDTH*2 - 4)) pos.x += 2;
 			break;
 		default:
 			break;

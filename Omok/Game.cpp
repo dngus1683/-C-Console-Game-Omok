@@ -6,14 +6,15 @@ Player* Game::PlayGame()
 	{
 		NowPosition = player[currentPlayer]->MakeMove(NowPosition);
 		if (!player[currentPlayer]->PlacePiece(board)) continue;
-		if (board->IsWinningMove(player[currentPlayer]->GetId(), NowPosition)) break;
+		if (board->IsWinningMove(player[currentPlayer]->GetId(), NowPosition, m_Setting.PermitWinOverFive)) break;
 		SwitchPlayer();
 	}
 	return player[currentPlayer];
 }
 
-Game::Game()
+Game::Game(Setting& setting)
 {
+	this->m_Setting = setting;
 	currentPlayer = 0;
 	m_DrawMap.GridDraw(0, 0, WIDTH, HEIGHT);
 	board = new Board;

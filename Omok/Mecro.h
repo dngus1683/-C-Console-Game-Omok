@@ -16,6 +16,9 @@ using namespace std;
 struct Setting
 {
 	bool PermitWinOverFive;
+	bool Permit6;
+	bool Permit3x3;
+	bool Permit4x4;
 };
 
 struct Rect

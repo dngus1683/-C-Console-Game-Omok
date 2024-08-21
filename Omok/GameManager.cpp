@@ -41,18 +41,39 @@ int GameManager::WinningScreen(Player* p)
 
 void GameManager::SettingScreen()
 {
-	m_DrawManager.DrawMidText("* 옵션 설정 *", m_CenterPosition.x, m_CenterPosition.y * 0.3f);
-	m_DrawManager.DrawMidText("1. 허용 | 0. 금수", m_CenterPosition.x, m_CenterPosition.y * 0.5f);
-	m_DrawManager.DrawMidText("<장목 승리>", m_CenterPosition.x * 0.5f, m_CenterPosition.y * 0.9f);
-	m_DrawManager.BoxDraw(m_CenterPosition.x , m_CenterPosition.y * 0.8f, 7, 3);
-	gotoxy(m_CenterPosition.x * 1.3f, m_CenterPosition.y*0.9f);
+	m_DrawManager.DrawMidText("* 옵션 설정 *", m_CenterPosition.x, m_CenterPosition.y * 0.2f);
+	m_DrawManager.DrawMidText("1. 허용 | 0. 금수", m_CenterPosition.x, m_CenterPosition.y * 0.4f);
+	
+	// 장목 승리 설정
+	m_DrawManager.DrawMidText("<장목 승리>", m_CenterPosition.x * 0.5f, m_CenterPosition.y * 0.8f);
+	m_DrawManager.BoxDraw(m_CenterPosition.x , m_CenterPosition.y * 0.7f, 7, 3);
+
+	// 장목 허용 설정
+	m_DrawManager.DrawMidText("<장목 허용>", m_CenterPosition.x * 0.5f, m_CenterPosition.y * 1.1f);
+	m_DrawManager.BoxDraw(m_CenterPosition.x, m_CenterPosition.y * 1.0f, 7, 3);
+
+	// 33 허용 설정
+	m_DrawManager.DrawMidText("<33 허용>", m_CenterPosition.x * 0.5f, m_CenterPosition.y * 1.4f);
+	m_DrawManager.BoxDraw(m_CenterPosition.x, m_CenterPosition.y * 1.3f, 7, 3);
+
+	// 44 허용 설정
+	m_DrawManager.DrawMidText("<44 허용>", m_CenterPosition.x * 0.5f, m_CenterPosition.y * 1.7f);
+	m_DrawManager.BoxDraw(m_CenterPosition.x, m_CenterPosition.y * 1.6f, 7, 3);
+
+	gotoxy(m_CenterPosition.x * 1.3f, m_CenterPosition.y * 0.8f);
 	cin >> m_Setting.PermitWinOverFive;
+	gotoxy(m_CenterPosition.x * 1.3f, m_CenterPosition.y * 1.1f);
+	cin >> m_Setting.Permit6;
+	gotoxy(m_CenterPosition.x * 1.3f, m_CenterPosition.y * 1.4f);
+	cin >> m_Setting.Permit3x3;
+	gotoxy(m_CenterPosition.x * 1.3f, m_CenterPosition.y * 1.7f);
+	cin >> m_Setting.Permit4x4;
 }
 
 GameManager::GameManager()
 {
 	// 게임 설정 초기화.
-	m_Setting = { false };
+	m_Setting = { false, false, false, false };
 
 	// 모든 메뉴 글과, 작성칸, 오목판을 그리기 위한 맵의 초기 설정.
 	m_MapSize.left = 0;

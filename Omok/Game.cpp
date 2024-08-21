@@ -5,6 +5,9 @@ Player* Game::PlayGame()
 	while (true)
 	{
 		NowPosition = player[currentPlayer]->MakeMove(NowPosition);
+		if ((!m_Setting.Permit6) && board->IsMoreThanSixMove(player[currentPlayer]->GetId(), NowPosition)) continue;
+		if ((!m_Setting.Permit3x3) && board->IsDoubleMove(player[currentPlayer]->GetId(), NowPosition, 3)) continue;
+		if ((!m_Setting.Permit4x4) && board->IsDoubleMove(player[currentPlayer]->GetId(), NowPosition, 4)) continue;
 		if (!player[currentPlayer]->PlacePiece(board)) continue;
 		if (board->IsWinningMove(player[currentPlayer]->GetId(), NowPosition, m_Setting.PermitWinOverFive)) break;
 		SwitchPlayer();

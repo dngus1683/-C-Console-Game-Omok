@@ -13,4 +13,6 @@ public:
 	void PlacePiece(const int& id, Position& pos);
 	bool IsFull(Position& pos);
 	bool IsWinningMove(const int& id, Position& pos, const bool PermitSix);
+	bool IsMoreThanSixMove(const int& id, Position& pos, const int MaximunNumber = 6);
+	bool IsDoubleMove(const int& id, Position& pos,  const int MaximunNumber);
 };

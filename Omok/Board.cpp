@@ -81,3 +81,73 @@ bool Board::IsWinningMove(const int& id, Position& pos, const bool PermitSix)
 	}
 	return false;
 }
+
+int DoubleCount = 0;
+
+static bool IsMoreThanN(bool visited[19][19], short board[19][19], short id, int x, int y, int direction, const int MaximunNumber)
+{
+	visited[y][x] = true;
+	cnt++;
+
+	if (cnt == MaximunNumber+1)
+	{
+		return false;
+	}
+
+
+	bool sign = true;
+
+	for (int i = 0; i < 2; i++)
+	{
+		int NextX = x + (sign ? deltaX[direction] : -deltaX[direction]);
+		int NextY = y + (sign ? deltaY[direction] : -deltaY[direction]);
+		if (NextX >= 0 && NextY >= 0 && NextX < 19 && NextY < 19)
+		{
+			if (!visited[NextY][NextX] && (board[NextY][NextX] == id))
+			{
+				if (!IsMoreThanN(visited, board, id, NextX, NextY, direction, MaximunNumber))
+				{
+					return false;
+				}
+			}
+		}
+		sign = !sign;
+	}
+
+	if (cnt == MaximunNumber)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Board::IsMoreThanSixMove(const int& id, Position& pos, const int MaximunNumber)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		bool visited[19][19] = { 0, };
+		cnt = 0;
+		if (IsMoreThanN(visited, board, id, pos.x / 2, pos.y, i, MaximunNumber))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Board::IsDoubleMove(const int& id, Position& pos, const int MaximunNumber)
+{
+	int DoubleCount = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		bool visited[19][19] = { 0, };
+		cnt = 0;
+		if (IsMoreThanN(visited, board, id, pos.x / 2, pos.y, i, MaximunNumber))
+		{
+			DoubleCount++;
+		}
+	}
+	if (DoubleCount >= 2) return true;
+	else return false;
+}
+

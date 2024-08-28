@@ -15,7 +15,7 @@ void Board::PlacePiece(const int& id, Position& pos)
 
 bool Board::IsFull(Position& pos)
 {
-	if (board[pos.y][pos.x/2] != 0) return true;
+	if (board[pos.y][pos.x / 2] != 0) return true;
 	else return false;
 }
 
@@ -24,21 +24,14 @@ int cnt = 0;
 int deltaX[4] = { 1, 0, 1, 1 };
 int deltaY[4] = { 0, 1, 1, -1 };
 
-static bool IsMoreThanFive(bool visited[19][19], short board[19][19], short id, int x, int y, int direction, const bool PermitSix)
+static bool IsMoreThanFive(bool visited[19][19], short board[19][19], short id, int x, int y, int direction)
 {
 	visited[y][x] = true;
 	cnt++;
 
-	if (cnt == 6 )
+	if (cnt > 5)
 	{
-		if (PermitSix)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return true;
 	}
 
 
@@ -52,7 +45,7 @@ static bool IsMoreThanFive(bool visited[19][19], short board[19][19], short id, 
 		{
 			if (!visited[NextY][NextX] && (board[NextY][NextX] == id))
 			{
-				if (IsMoreThanFive(visited, board, id, NextX, NextY, direction, PermitSix))
+				if (IsMoreThanFive(visited, board, id, NextX, NextY, direction))
 				{
 					return true;
 				}
@@ -61,20 +54,30 @@ static bool IsMoreThanFive(bool visited[19][19], short board[19][19], short id, 
 		sign = !sign;
 	}
 
-	if (cnt == 5)
-	{
-		return true;
-	}
 	return false;
 }
 
-bool Board::IsWinningMove(const int& id, Position& pos, const bool PermitSix)
+bool Board::IsWinningMove(const int& id, Position& pos, const bool PermitOver6)
 {
 	for (int i = 0; i < 4; i++)
 	{
 		bool visited[19][19] = { 0, };
 		cnt = 0;
-		if (IsMoreThanFive(visited, board, id, pos.x / 2, pos.y, i, PermitSix))
+		IsMoreThanFive(visited, board, id, pos.x / 2, pos.y, i);
+
+		if (PermitOver6 && cnt >= 5) return true;
+		else if (!PermitOver6 && cnt == 5) return true;
+	}
+	return false;
+}
+
+bool Board::IsMoreThanSixMove(const int& id, Position& pos)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		bool visited[19][19] = { 0, };
+		cnt = 0;
+		if (IsMoreThanFive(visited, board, id, pos.x / 2, pos.y, i))
 		{
 			return true;
 		}
@@ -82,18 +85,20 @@ bool Board::IsWinningMove(const int& id, Position& pos, const bool PermitSix)
 	return false;
 }
 
-int DoubleCount = 0;
+bool bBlankVisit[2] = { false, false };
+bool bStuckInEnemy = false;
 
 static bool IsMoreThanN(bool visited[19][19], short board[19][19], short id, int x, int y, int direction, const int MaximunNumber)
 {
 	visited[y][x] = true;
-	cnt++;
-
-	if (cnt == MaximunNumber+1)
+	if (board[y][x] == id)
 	{
-		return false;
+		cnt++;
 	}
-
+	if (cnt > MaximunNumber)
+	{
+		return true;
+	}
 
 	bool sign = true;
 
@@ -101,37 +106,25 @@ static bool IsMoreThanN(bool visited[19][19], short board[19][19], short id, int
 	{
 		int NextX = x + (sign ? deltaX[direction] : -deltaX[direction]);
 		int NextY = y + (sign ? deltaY[direction] : -deltaY[direction]);
-		if (NextX >= 0 && NextY >= 0 && NextX < 19 && NextY < 19)
+		if (NextX >= 0 && NextY >= 0 && NextX < WIDTH - 1 && NextY < HEIGHT - 1 && !visited[NextY][NextX])
 		{
-			if (!visited[NextY][NextX] && (board[NextY][NextX] == id))
+			if (board[NextY][NextX] == id)
 			{
-				if (!IsMoreThanN(visited, board, id, NextX, NextY, direction, MaximunNumber))
-				{
-					return false;
-				}
+				if (IsMoreThanFive(visited, board, id, NextX, NextY, direction)) return true;
+			}
+			else if (board[NextY][NextX] == 0 && !bBlankVisit[sign])
+			{
+				bBlankVisit[sign] = true;
+				if (IsMoreThanFive(visited, board, id, NextX, NextY, direction)) return true;
+			}
+			else if ((board[NextY][NextX] != id) && (board[NextY][NextX] != 0))
+			{
+				bStuckInEnemy = true;
 			}
 		}
 		sign = !sign;
 	}
 
-	if (cnt == MaximunNumber)
-	{
-		return true;
-	}
-	return false;
-}
-
-bool Board::IsMoreThanSixMove(const int& id, Position& pos, const int MaximunNumber)
-{
-	for (int i = 0; i < 4; i++)
-	{
-		bool visited[19][19] = { 0, };
-		cnt = 0;
-		if (IsMoreThanN(visited, board, id, pos.x / 2, pos.y, i, MaximunNumber))
-		{
-			return true;
-		}
-	}
 	return false;
 }
 
@@ -142,7 +135,10 @@ bool Board::IsDoubleMove(const int& id, Position& pos, const int MaximunNumber)
 	{
 		bool visited[19][19] = { 0, };
 		cnt = 0;
-		if (IsMoreThanN(visited, board, id, pos.x / 2, pos.y, i, MaximunNumber))
+		bBlankVisit[0] = false;
+		bBlankVisit[1] = false;
+		bStuckInEnemy = false;
+		if (!IsMoreThanN(visited, board, id, pos.x / 2, pos.y, i, MaximunNumber) && cnt == MaximunNumber && !bStuckInEnemy)
 		{
 			DoubleCount++;
 		}

@@ -85,60 +85,84 @@ bool Board::IsMoreThanSixMove(const int& id, Position& pos)
 	return false;
 }
 
-bool bBlankVisit[2] = { false, false };
-bool bStuckInEnemy = false;
+bool bBlankVisit = false;
 
-static bool IsMoreThanN(bool visited[19][19], short board[19][19], short id, int x, int y, int direction, const int MaximunNumber)
+static Position FindStartPoint(const short board[19][19], const short& id, Position p, const int& direction, const bool& sign)
 {
-	visited[y][x] = true;
-	if (board[y][x] == id)
-	{
-		cnt++;
-	}
-	if (cnt > MaximunNumber)
-	{
-		return true;
-	}
+	Position StartPoint;
 
-	bool sign = true;
+	int x = p.x / 2;
+	int y = p.y;
+	int PrePiece = 0;
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 5; i++)
 	{
-		int NextX = x + (sign ? deltaX[direction] : -deltaX[direction]);
-		int NextY = y + (sign ? deltaY[direction] : -deltaY[direction]);
-		if (NextX >= 0 && NextY >= 0 && NextX < WIDTH - 1 && NextY < HEIGHT - 1 && !visited[NextY][NextX])
+		if (board[y][x] == id || i == 0)
 		{
-			if (board[NextY][NextX] == id)
-			{
-				if (IsMoreThanFive(visited, board, id, NextX, NextY, direction)) return true;
-			}
-			else if (board[NextY][NextX] == 0 && !bBlankVisit[sign])
-			{
-				bBlankVisit[sign] = true;
-				if (IsMoreThanFive(visited, board, id, NextX, NextY, direction)) return true;
-			}
-			else if ((board[NextY][NextX] != id) && (board[NextY][NextX] != 0))
-			{
-				bStuckInEnemy = true;
-			}
+			StartPoint = { x,y };
 		}
-		sign = !sign;
-	}
+		else if (board[y][x] == 0 && i != 0)
+		{
+			bBlankVisit = true;
+		}
 
-	return false;
+		PrePiece = board[y][x];
+		x = x + (sign ? deltaX[direction] : -deltaX[direction]);
+		y = y + (sign ? deltaY[direction] : -deltaY[direction]);
+
+		if ((board[y][x] != id && board[y][x] != 0))
+		{
+			break;
+		}
+		else if ((board[y][x] == 0 && bBlankVisit))
+		{
+			if (PrePiece == 0)
+			{
+				bBlankVisit = false;
+			}
+			break;
+		}
+	}
+	return StartPoint;
+}
+static bool CanMakeFive(const short board[19][19], const short& id, Position p, const int& direction, const bool& sign)
+{
+	int x = p.x;
+	int y = p.y;
+
+	for (int i = 0; i < 5; i++)
+	{
+		if (board[y][x] == id)
+		{
+			cnt++;
+		}
+		else if (board[y][x] != 0)
+		{
+			return false;
+		}
+
+		x = x + (sign ? deltaX[direction] : -deltaX[direction]);
+		y = y + (sign ? deltaY[direction] : -deltaY[direction]);
+	}
+	return true;
 }
 
 bool Board::IsDoubleMove(const int& id, Position& pos, const int MaximunNumber)
 {
 	int DoubleCount = 0;
-	for (int i = 0; i < 4; i++)
+	for (int direction = 0; direction < 4; direction++)
 	{
-		bool visited[19][19] = { 0, };
 		cnt = 0;
-		bBlankVisit[0] = false;
-		bBlankVisit[1] = false;
-		bStuckInEnemy = false;
-		if (!IsMoreThanN(visited, board, id, pos.x / 2, pos.y, i, MaximunNumber) && cnt == MaximunNumber && !bStuckInEnemy)
+		bBlankVisit = false;
+		Position PFirst = FindStartPoint(board, id, pos, direction, true);
+		bool bFirst = CanMakeFive(board, id, PFirst, direction, false);
+
+		cnt = 0;
+		Position PSecond = FindStartPoint(board, id, pos, direction, false);
+		bool bSecond = CanMakeFive(board, id, PSecond, direction, true);
+
+		int check = cnt;
+		if (bFirst && bSecond && cnt == MaximunNumber-1)
 		{
 			DoubleCount++;
 		}
